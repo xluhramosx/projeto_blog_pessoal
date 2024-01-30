@@ -43,7 +43,7 @@ public class PostagemController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Postagem> getById(@PathVariable Long id){
 		return postagemRepository.findById(id)
-				.map(resposta -> ResponseEntity.ok(resposta))
+				.map(resp -> ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
@@ -51,38 +51,41 @@ public class PostagemController {
 	public ResponseEntity<List<Postagem>> getByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem  postagem){
+	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem){
 		if (temaRepository.existsById(postagem.getTema().getId()))
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(postagemRepository.save(postagem));
-		
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(postagemRepository.save(postagem));
+			
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema não existe!", null);
 	}
 	
 	@PutMapping
-	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem  postagem){
+	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem){
 		if (postagemRepository.existsById(postagem.getId())){
 			
 			if (temaRepository.existsById(postagem.getTema().getId()))
-			  return ResponseEntity.status(HttpStatus.OK)
+				return ResponseEntity.status(HttpStatus.OK)
 						.body(postagemRepository.save(postagem));
 			
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema não existe", null);
-		}
-		
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema não existe!", null);
+			
+		}			
+			
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
-		public void delete(@PathVariable Long id) {
-			Optional<Postagem> postagem = postagemRepository.findById(id);
-			
-			if(postagem.isEmpty())
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-			
-			postagemRepository.deleteById(id);
-		}
+	public void delete(@PathVariable Long id) {
+		Optional<Postagem> postagem = postagemRepository.findById(id);
+		
+		if(postagem.isEmpty())
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		
+		postagemRepository.deleteById(id);				
 	}
+	
+}

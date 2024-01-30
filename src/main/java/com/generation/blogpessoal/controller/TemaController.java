@@ -27,8 +27,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TemaController {
-	
-	@Autowired
+    
+    @Autowired
     private TemaRepository temaRepository;
     
     @GetMapping
@@ -72,8 +72,7 @@ public class TemaController {
         if(tema.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         
-        temaRepository.deleteById(id);  
+        temaRepository.deleteById(id);              
+    }
 
-}
-    
 }

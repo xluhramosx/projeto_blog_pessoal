@@ -36,7 +36,8 @@ public class UsuarioController {
 	@GetMapping("/all")
 	public ResponseEntity <List<Usuario>> getAll(){
 		
-		return ResponseEntity.ok(usuarioRepository.findAll());	
+		return ResponseEntity.ok(usuarioRepository.findAll());
+		
 	}
 
 	@GetMapping("/{id}")
@@ -54,6 +55,7 @@ public class UsuarioController {
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
     
+
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Usuario> postUsuario(@RequestBody @Valid Usuario usuario) {
 
